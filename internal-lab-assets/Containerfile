@@ -1,0 +1,16 @@
+# Debian 12.1 (Bookworm)
+# Includes Python 3.11 and Pip
+FROM python:bookworm
+
+# Install git and sshd
+RUN apt update
+RUN apt install git openssh-server
+
+# Copy assets
+COPY container-assets /
+
+# Create users
+RUN chmod u+x container-assets gitops-build.sh
+RUN for user in `cat /container-assets/users.txt`; do \
+    adduser --comment "" $user && \
+    echo "$user:$user-tx23" | chpasswd; done
