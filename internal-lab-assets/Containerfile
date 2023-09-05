@@ -4,7 +4,8 @@ FROM python:bookworm
 
 # Install git and sshd
 RUN apt update
-RUN apt install git openssh-server
+RUN apt install git openssh-server -y
+RUN systemctl enable ssh
 
 # Copy assets
 COPY container-assets /
@@ -14,3 +15,5 @@ RUN chmod u+x container-assets gitops-build.sh
 RUN for user in `cat /container-assets/users.txt`; do \
     adduser --comment "" $user && \
     echo "$user:$user-tx23" | chpasswd; done
+
+CMD ["/usr/sbin/sshd", "-D"]
