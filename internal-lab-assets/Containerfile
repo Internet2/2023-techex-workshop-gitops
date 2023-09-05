@@ -15,4 +15,6 @@ RUN for user in `cat /container-assets/users.txt`; do \
     adduser --comment "" $user && \
     echo "$user:$user-tx23" | chpasswd; done
 
+# Allow SSH
+EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
