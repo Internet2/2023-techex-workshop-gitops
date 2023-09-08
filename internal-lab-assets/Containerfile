@@ -10,7 +10,7 @@ RUN apt install git openssh-server -y
 COPY container-assets /
 
 # Create users
-RUN for user in `cat /container-assets/users.txt`; do \
+RUN for user in `cat /users.txt`; do \
     adduser --comment "" $user && \
     echo "$user:$user-tx23" | chpasswd; done
 
