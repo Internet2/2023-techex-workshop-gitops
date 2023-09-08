@@ -1,6 +1,6 @@
 # Internal Lab Assets
 
-This folder contains assets that were used to deploy the containerized Ubuntu environment for this workshop.
+This folder contains assets that were used to deploy the containerized Ubuntu environment for this workshop. It is used by presenters and is also included for any curious minds.
 
 ## Deploying the container
 
