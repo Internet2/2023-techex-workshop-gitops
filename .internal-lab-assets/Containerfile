@@ -2,9 +2,13 @@
 # Includes Python 3.11 and Pip
 FROM python:bookworm
 
-# Install git and sshd
+# Install git, sshd, pip, and the text editors
 RUN apt update
-RUN apt install git openssh-server -y
+RUN apt install -y --no-install-recommends \
+    git \
+    openssh-server \
+    pip \
+    vim nano emacs
 
 # Copy assets
 COPY container-assets /
