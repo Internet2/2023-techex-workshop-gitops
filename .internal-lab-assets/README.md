@@ -8,6 +8,6 @@ From the host, gitops-tx23-workshop.macc.ns.internet2.edu:
 
 1. `cd /lab-gitops/2023-techex-workshop-gitops/internal-lab-assets`
 2. `docker build -f Containerfile -t gitops .`
-3. `docker run -t -i -dp 127.0.0.1:2431:22 gitops`
+3. `docker run -t -i -dp :2431:22 gitops`
 
 User SSH is now available via `ssh gitops-tx23-workshop.macc.ns.internet2.edu -p 2431`
