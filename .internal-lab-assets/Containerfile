@@ -8,6 +8,7 @@ RUN apt install -y --no-install-recommends \
     git \
     openssh-server \
     pip \
+    tree \
     vim nano emacs
 
 # Copy assets
