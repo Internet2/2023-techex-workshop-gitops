@@ -1,0 +1,59 @@
+name: Create python package PyPI release
+on:
+  push:
+    branches:
+      - create-python-package-pypi-release
+
+jobs:
+  create-python-package-pypi-release:
+    name: Create a python package and upload it to PyPI so that can be installed via pip or poetry
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: read   # Required to check out the code
+      id-token: write  # Required for OIDC
+      issues: write    # Required to create an issue on failure
+
+    env:
+      PACKAGE_PATH: "./${{ vars.PACKAGE_NAME }}"
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Build the package
+        working-directory: ${{ env.PACKAGE_PATH }}
+        run: poetry build
+
+      - name: Get package version
+        working-directory: ${{ env.PACKAGE_PATH }}
+        run: echo PACKAGE_VERSION=$(grep version pyproject.toml | cut -d\" -f2) >> $GITHUB_ENV
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: ${{ env.PACKAGE_PATH }}/dist
+          print-hash: true
+          verbose: true
+
+      - name: Create Issue for a failed deployment
+        if: ${{ failure() }}
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: Action workflow failed.
+          body: |
+            ### Context
+            [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            [Codebase](https://github.com/${{ github.repository }}/tree/${{ github.sha }})
+            Workflow name - `${{ github.workflow }}`
+            Job -           `${{ github.job }}`
+            status -        `${{ job.status }}`
