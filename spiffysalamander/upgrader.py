@@ -9,7 +9,7 @@ def upgrade(device: str, image_name: str) -> None:
     time.sleep(2)
     print("Connected! Upgrading...")
     _pretend_loading_bar()
-    print(f"{device} upgrad to {image_name}")
+    print(f"{device} upgraded to {image_name}")
 
 
 def _pretend_loading_bar() -> None:
